@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+class player{
+    public:
+    player();
+    char play_name;
+    int curr_pos;
+    int prev_pos;
+    int roll_die();
+};
+player::player(){
+    curr_pos=1;
+    prev_pos=1;
+}
+player::roll_die(){
+    return rand()%6+1;
+    
+}
+
+class board{
+    public:
+    int size[10][10];
+    int block_no;
+    int block(int);
+    
+};
+board::block(int){
+    int k=0;
+    for i=0;i<10;i++{
+        for j=0;j<10;j++{
+            block_no[i][j]=k++;
+        }
+    }
+}
+class SnL{
+    char greeting_comment(int);
+};
+SnL::greeting_comment(int block_no){
+    if {block_no==12||block_no==35||block_no==76}
+    cout<<"seedhi mil gyi!!"<<endl;
+    else if {block_no==29||block_no==43||block_no==99}
+    cout<<"bhag BC saanp aaya"<<endl;
+}
+class position:SnL{
+    public:
+    int next_pos(int,int);
+    
+};
+position::next_pos(int curr_pos,int roll_die()){
+    return block(int curr_pos[i++roll_die()][j]);
+    
+    if block_no==12
+    return 27;
+    else if block_no==35
+    return 64;
+    else if block_no==76
+    return 92;
+    else if block_no==29
+    return 15;
+    else if block_no==43
+    return 33;
+    else if block_no==99
+    return 21;
+    
+}
+
+
+int main() {
+    // Write C++ code here
+    srand(time(0));
+    player player1,player2;
+    cout<<"first player-";
+    cin>>player1.play_name;
+    cout<<"second player-";
+    cin>>player211.play_name;
+    //int position;
+    while(1){
+        player1.prev_pos=player1.curr_pos;
+        //position=player1.roll_die+player1.prev_pos;
+        player1.curr_pos = player1.next_pos(player1.prev_pos,player1.roll_die());
+        if (player1.curr_pos > 100)
+        player1.curr_pos=player1.prev_pos;
+        cout<<player1.play_name<<"\t"<<player1.curr_pos<<"\t" roll_die << endl;
+        if(player1.curr_pos == 100)
+        {
+        cout << player1.play_name<<" akhir tum jeet hi gye " << endl;
+        break;
+        }
+        player2.prev_pos=player2.curr_pos;
+        player2.curr_pos = player2.next_pos(player2.prev_pos,player2.roll_die());
+        if (player2.curr_pos > 100)
+        player2.curr_pos=player2.prev_pos;
+        cout<<player2.play_name<<"\t"<<player2.curr_pos<<"\t" roll_die << endl;
+        if(player2.curr_pos == 100){
+            cout << player2.play_name<<" akhir tum jeet hi gye " << endl;
+        break;
+    }
+    }
+    
+    
+    return 0;
+}
