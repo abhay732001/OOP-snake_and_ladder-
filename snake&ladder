@@ -32,16 +32,7 @@ board::block(int){
         }
     }
 }
-class SnL{
-    char greeting_comment(int);
-};
-SnL::greeting_comment(int block_no){
-    if {block_no==12||block_no==35||block_no==76}
-    cout<<"seedhi mil gyi!!"<<endl;
-    else if {block_no==29||block_no==43||block_no==99}
-    cout<<"bhag BC saanp aaya"<<endl;
-}
-class position:SnL{
+class position{
     public:
     int next_pos(int,int);
     
@@ -63,7 +54,15 @@ position::next_pos(int curr_pos,int roll_die()){
     return 21;
     
 }
-
+class SnL:position {
+    char greeting_comment(int);
+};
+SnL::greeting_comment(int block_no){
+    if {block_no==12||block_no==35||block_no==76}
+    cout<<"seedhi mil gyi!!"<<endl;
+    else if {block_no==29||block_no==43||block_no==99}
+    cout<<"bhag BC saanp aaya"<<endl;
+}
 
 int main() {
     // Write C++ code here
