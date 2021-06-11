@@ -1,0 +1,93 @@
+
+pragma solidity >=0.4.25 <0.7.0;
+
+
+contract MetaCoin {
+	mapping (address => uint256) balances;
+
+	event Transfer(address indexed _from, address indexed _to, uint256 _value);
+
+	constructor() public {
+		balances[tx.origin] = 100000;
+	}
+
+	function sendCoin(address receiver, uint256 amount, address sender) public returns(bool sufficient) {
+		if (balances[sender] < amount) return false;
+		balances[sender] -= amount;
+		balances[receiver] += amount;
+		emit Transfer(sender, receiver, amount);
+		return true;
+	}
+
+
+	function getBalance(address addr) public view returns(uint256) {
+		return balances[addr];
+	}
+}
+
+
+
+contract Loan is MetaCoin {
+    mapping (address => uint256) private loans;
+     
+    event Request(address indexed _from, uint256 P, uint R, uint T, uint256 amt);
+    
+    address private Owner;
+    
+    
+    modifier isOwner() {
+        
+        require(msg.sender == owner);
+       
+    }
+    
+    constructor() public {
+        
+         owner = msg.sender;
+         balances[msg.sender]=100000;
+       
+    }
+    
+    
+    
+    function getCompoundInterest(uint256 principle, uint rate, uint time) public pure returns(uint256) {
+    		        uint256 period;
+        for(period=0;period<time;period++){
+            principle = add (principle, mulDiv (rate, principle, 10^18));
+        }
+        return principle;
+        
+    }
+    
+    function reqLoan(uint256 principle, uint rate, uint time) public returns(bool correct) {
+        uint256 toPay = getCompoundInterest(principle, rate, time);
+               function approve(address creditor, address owner, uint256 toPay) public returns (bool) {
+           require(creditor != address(0), "ERC20: approve from the zero address");
+           require(owner != address(0), "ERC20: approve to the zero address");
+           
+           loans[creditor] = toPay;
+           emit Request(creditor,principle,rate,time,toPay)
+           return true;
+        }
+
+        
+    }
+    
+    function getOwnerBalance() public view returns(uint256) {
+				
+		        MetaCoin Balance= new MetaCoin();
+		        return Balance.getBalance(owner);
+        
+    }
+    function viewDues(creditor) private view returns(uint256){
+        return toPay;
+    }
+    function settleDues(creditor) private return(bool){
+        
+        sendCoin(creditor,toPay,owner);
+        if(sendCoin(creditor,toPay,owner))
+            toPay=0;
+    }
+    
+    
+}
