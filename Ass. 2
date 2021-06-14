@@ -51,7 +51,7 @@ contract Loan is MetaCoin {
     constructor() public {
         
          owner = msg.sender;
-         balances[msg.sender]=100000;
+         creditor=msg.sender;
         // Make the creator of the contract the Owner.
         // You can take the help of 2_owner.sol contract in remix for this and the above function.
     }
@@ -83,8 +83,13 @@ contract Loan is MetaCoin {
         //   require(owner != address(0), "ERC20: approve to the zero address");
            
            loans[creditor] = toPay;
-           emit Request(creditor,principle,rate,time,toPay);
-           return true ;
+           if(toPay>principle){
+               emit Request(creditor,principle,rate,time,toPay);
+               return true ;
+           }
+           else 
+           return false;
+           
         // }
 
         
@@ -98,13 +103,16 @@ contract Loan is MetaCoin {
         
     }
     function viewDues(creditor) private view returns(uint256){
-        return toPay;
+        return loans[creditor];
+        
     }
     function settleDues(creditor) private returns(bool){
+        if(loans[creditor]>0){
+            sendCoin(creditor,toPay,owner);
+        }
         
-        sendCoin(creditor,toPay,owner);
         if(sendCoin(creditor,toPay,owner))
-            toPay=0;
+            loans[creditor]=0;
     }
     // implement viewDues and settleDues which allow *ONLY* the owner
 //         to *view* and *settle* his loans respectively. They take in the 
