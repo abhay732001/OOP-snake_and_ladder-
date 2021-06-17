@@ -43,15 +43,15 @@ contract Loan is MetaCoin {
     
     modifier isOwner() {
         
-        require(msg.sender == owner);
+        require(msg.sender == Owner);
         _;
         // Implement a modifier to allow only the owner of the contract to use specific functions
     }
     
     constructor() public {
         
-         owner = msg.sender;
-         creditor=msg.sender;
+         Owner = tx.origin;
+         
         // Make the creator of the contract the Owner.
         // You can take the help of 2_owner.sol contract in remix for this and the above function.
     }
@@ -66,10 +66,13 @@ contract Loan is MetaCoin {
         // https://medium.com/coinmonks/math-in-solidity-part-3-percents-and-proportions-4db014e080b1 just read the towards full proportion part.
         // A good way to prevent overflows will be to typecast principle, rate and the big number divider suggested in the above blogs as uint256 variables, just use uint256 R = rate;
         uint256 period;
+        uint256 p=principle;
+        uint256 r=rate;
+        uint256 CI;
         for(period=0;period<time;period++){
-            principle = add (principle, mulDiv (rate, principle, 10^18));
+            p += (p*r)/100 ;
         }
-        return principle;
+        return CI=p-principle ;
         
     }
     
@@ -82,9 +85,9 @@ contract Loan is MetaCoin {
         //   require(creditor != address(0), "ERC20: approve from the zero address");
         //   require(owner != address(0), "ERC20: approve to the zero address");
            
-           loans[creditor] = toPay;
+           loans[msg.sender] = toPay;
            if(toPay>principle){
-               emit Request(creditor,principle,rate,time,toPay);
+               emit Request(msg.sender,principle,rate,time,toPay);
                return true ;
            }
            else 
@@ -98,20 +101,21 @@ contract Loan is MetaCoin {
     function getOwnerBalance() public view returns(uint256) {
 				// use the getBalance function of MetaCoin contract to view the Balance of the contract Owner.
 				// hint: how do you access the functions / variables of the parent class in your favorite programming language? It is similar to that in solidity as well!
-		        MetaCoin Balance= new MetaCoin();
-		        return Balance.getBalance(owner);
+		        uint256 Balance= getBalance(Owner);
+		        return Balance;
         
     }
-    function viewDues(creditor) private view returns(uint256){
+    function viewDues(address creditor) private view returns(uint256){
         return loans[creditor];
         
     }
-    function settleDues(creditor) private returns(bool){
+    function settleDues(address creditor) private returns(bool){
+        uint256 money=viewDues(creditor);
         if(loans[creditor]>0){
-            sendCoin(creditor,toPay,owner);
+            sendCoin(creditor,money,Owner);
         }
         
-        if(sendCoin(creditor,toPay,owner))
+        if(sendCoin(creditor,money,Owner))
             loans[creditor]=0;
     }
     // implement viewDues and settleDues which allow *ONLY* the owner
